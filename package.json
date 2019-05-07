@@ -1,0 +1,19 @@
+{
+  "name": "innovate-ip-kata",
+  "version": "1.0.0",
+  "description": "Programming challenge from Innovate IP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nameEqualsJared/innovateIPKata.git"
+  },
+  "author": "Jared Harp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nameEqualsJared/innovateIPKata/issues"
+  },
+  "homepage": "https://github.com/nameEqualsJared/innovateIPKata#readme"
+}
