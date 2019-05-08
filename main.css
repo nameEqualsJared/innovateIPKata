@@ -1,0 +1,15 @@
+body {
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 50px;
+    text-align: center;
+}
+
+textarea {
+    display: block;
+}
+
+#flex-container {
+    display: flex;
+    justify-content: space-around;
+}
