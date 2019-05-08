@@ -1,5 +1,5 @@
 // Use object destructuring to import the relevant functions
-const { getInputColors } = require("./utils");
+const { getInputColors, getColorFrequencies } = require("./utils");
 
 const inputTA = document.querySelector("#input");
 
@@ -9,14 +9,12 @@ function initApp() {
 }
 
 function generateNewOutput() {
-    // get the input colors as an array
-    const inputColors = getInputColors(inputTA.value);
+    // get all input colors as an array. I.e., tokenize the input
+    const allInputColors = getInputColors(inputTA.value);
 
-    // save the start and end colors
-    const startColor = inputColors[0];
-    const endColor = inputColors[1];
-
-    // 
+    // save the start and end color markers
+    const startColor = allInputColors[0];
+    const endColor = allIinputColors[1];
 
 }
 
