@@ -2,6 +2,7 @@
 
 // import the functions we want to test
 const { getInputColors, arrayCount, getColorFrequencies } = require("./utils");
+const diGraph = require('./diGraph');
 
 // ----- UNIT TESTS -----
 
@@ -36,6 +37,90 @@ test("strange input test 1 -- should work with noncolors too", function () {
     expect(actual).toStrictEqual(["123113", "1331313", "313", "3133", "123", "334", "56", "70"]);
 })
 
+// -- Unit tests for: diGraph.helperConstructor()
+test("routine input 1", function () {
+    // evaluate what we actually get
+    const chipColors = ["blue", "red", "red", "blue", "yellow", "blue", "green", "blue"];
+    const actual = diGraph.helperConstructor(chipColors);
+
+    // set up what we expect
+    const adjList = { blue: ["red"], red: ["blue"], yellow: ["blue"], green: ["blue"] };
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
+
+test("routine input 2", function () {
+    // evaluate what we actually get
+    const chipColors = ["blue", "red", "blue", "yellow", "blue", "green", "blue", "red", "red", "blue"];
+    const actual = diGraph.helperConstructor(chipColors);
+
+    // set up what we expect
+    const adjList = { blue: ["red", "yellow", "green", "red"], red: ["blue"] };
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
+
+test("routine input 3", function () {
+    // evaluate what we actually get
+    const chipColors = ["blue", "red", "blue", "green", "red", "green", "red", "blue"];
+    const actual = diGraph.helperConstructor(chipColors);
+
+    // set up what we expect
+    const adjList = { blue: ["red", "green"], red: ["green", "blue"] };
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
 
 
+test("routine input 4", function () {
+    // evaluate what we actually get
+    const chipColors = ["black", "red", "purple", "black", "red", "green", "blue", "black", "black", "green", "black", "purple", "blue", "purple"];
+    const actual = diGraph.helperConstructor(chipColors);
 
+    // set up what we expect
+    const adjList = { black: ["red", "green", "purple"], purple: ["black"], red: ["green"], blue: ["black", "purple"] };
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
+
+test("boudary input 1", function () {
+    // evaluate what we actually get
+    const chipColors = ["black", "red"];
+    const actual = diGraph.helperConstructor(chipColors);
+
+    // set up what we expect
+    const adjList = { black: ["red"] };
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
+
+
+test("boudary input 2", function () {
+    // evaluate what we actually get
+    const chipColors = [];
+    const actual = diGraph.helperConstructor(chipColors);
+
+    // set up what we expect
+    const adjList = {};
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
+
+
+test("strange input 1 -- should have no problem working with noncolors", function () {
+    // evaluate what we actually get
+    const chipColors = ["1", "12", "2", "1", "1", "2", "2", "12"];
+    const actual = diGraph.helperConstructor(chipColors);
+
+    // set up what we expect
+    const adjList = { 1: ["12"], 2: ["1"], 1: ["2"], 2: ["12"] };
+    const expected = new diGraph(adjList);
+
+    expect(actual).toStrictEqual(expected);
+})
