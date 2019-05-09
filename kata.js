@@ -28,4 +28,9 @@ const diGraph = require('./diGraph');
 // // Start the application
 // initApp();
 
-console.log(diGraph.helperConstructor(["blue", "red"]));
+const dg = new diGraph({
+    a: ["b"],
+    b: ["a"]
+})
+
+dg.describeVertices();
