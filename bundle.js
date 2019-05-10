@@ -1,7 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 // import arrayCount
 const { arrayCount } = require('./utils')
-console.log(arrayCount);
 
 // Following is a utility method used in depth-first-search.
 function visit(graph, v, discovered) {
@@ -285,8 +284,8 @@ class diGraph {
 module.exports = diGraph;
 },{"./utils":3}],2:[function(require,module,exports){
 // Use object destructuring to import the relevant functions
-const { getInputColors, getColorFrequencies, isUnlockable } = require("./utils");
 const diGraph = require('./diGraph');
+const { getInputColors, getColorFrequencies, isUnlockable } = require("./utils");
 
 const inputTA = document.querySelector("#input");
 const outputTA = document.querySelector("#output");
@@ -374,8 +373,6 @@ function isUnlockable(startColor, endColor, diGraphRep) {
 
     // if diGraph is empty (which will happen if no chips were specified, and corresponds to the vertices array being empty) can immediatedly return false
     if (vertices.length === 0) return false;
-    console.log("HERE");
-
 
     // check that start and end color are in the vertices of the diGraphRep to start; certainly won't have a solution if they are not!
     if (!(vertices.includes(startColor))) return false;
@@ -404,9 +401,7 @@ function isUnlockable(startColor, endColor, diGraphRep) {
         // Critera 1: all vertices with nonzero degree belong to a single connected component of the underlying undirected graph
         if (!(diGraphRep.isNumConCompsUndirOne)) return false;
 
-
         const degreeDescs = diGraphRep.describeVertices();
-        console.log("here and", degreeDescs);
 
         // Criteria 2: the vertice corresponding to the start color must have indeg(v)-outdeg(v) == -1
         if (degreeDescs[startColor].in - degreeDescs[startColor].out != -1) return false;

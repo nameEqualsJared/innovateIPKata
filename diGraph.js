@@ -213,7 +213,6 @@ class diGraph {
         // if graph is empty, just return false (there is no strongly connected components I'd say)
         if (vertices.length === 0) return false
 
-
         let discovered = [];
         // recall that every top level call to visit discovers a new connected component. So to check if the dfs hits every component, we can just check that the length of discovered is = the number of vertices in the directed graph
         visit(this.adjList, distinguishedV, discovered);

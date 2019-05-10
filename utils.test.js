@@ -1,7 +1,9 @@
 // Unit testing utils.js
 
+// import the diGraph class
+const diGraph = require("./diGraph");
 // import the functions we want to test
-const { getInputColors, arrayCount, nestedArraysEqualUnordered } = require("./utils");
+const { getInputColors, arrayCount, isUnlockable } = require("./utils");
 
 // -- Unit tests for: getInputColors --------------------------------------------------------------------------------------------------
 test("getInputColors, routine input test 1", function () {
@@ -81,5 +83,455 @@ test("arrayCount(), boundary input test 4", function () {
     expect(actual).toBe(0);
 });
 
-// --Unit tests for: isUnlockable() -------------------------------------------------------------------------------------------
+// --Unit tests for: isUnlockable() ---------------------------------------------------------------------------------------------------
+test("isUnlockable(), routine input test 1", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "b";
+    const adjList = {
+        a: ["c"],
+        c: ["b"],
+        b: []
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 2", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "b";
+    const adjList = {
+        a: ["c"],
+        c: [],
+        b: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+
+test("isUnlockable(), routine input test 3", function () {
+    // evaluate what we actually get
+    const startColor = "a";
+    const endColor = "b";
+    const adjList = {
+        a: ["c"],
+        c: ["b"],
+        b: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 4", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "c";
+    const adjList = {
+        a: ["c"],
+        c: ["b"],
+        b: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+
+test("isUnlockable(), routine input test 5", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "c";
+    const adjList = {
+        a: ["c", "b"],
+        c: ["b"],
+        b: ["c", "a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 6", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "c";
+    const adjList = {
+        a: ["c", "b"],
+        c: ["b", "a"],
+        b: ["c", "a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 7", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 8", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b", "c"],
+        b: ["a"],
+        c: ["a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 8", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b", "c"],
+        b: ["a"],
+        c: ["a", "b"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 8", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b", "c"],
+        b: ["a", "c"],
+        c: ["a", "b"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 9", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: ["d", "a"],
+        d: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 10", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["c", "a"],
+        c: ["d", "a"],
+        d: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 11", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "d";
+    const adjList = {
+        a: ["b"],
+        b: ["a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 12", function () {
+    // evaluate what we actually get
+    const startColor = "d"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 13", function () {
+    // evaluate what we actually get
+    const startColor = "d"
+    const endColor = "y";
+    const adjList = {
+        a: ["b"],
+        b: ["a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 14", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 15", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["a", "c"],
+        c: []
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 16", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["a", "c"],
+        c: ["b"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 17", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {
+        a: ["b"],
+        b: ["a", "c"],
+        c: ["a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 18", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "b";
+    const adjList = {
+        a: ["b"],
+        b: [],
+        c: []
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 19", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "b";
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: []
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+
+test("isUnlockable(), routine input test 20", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "c";
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: []
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 21", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "c";
+    const adjList = {
+        a: ["b"],
+        b: ["c", "a"],
+        c: []
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 22", function () {
+    // evaluate what we actually get
+    const startColor = "c"
+    const endColor = "b";
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b", "a"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), routine input test 23", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "b";
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+
+test("isUnlockable(), routine input test 24", function () {
+    // evaluate what we actually get
+    const startColor = "b"
+    const endColor = "b";
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 25", function () {
+    // evaluate what we actually get
+    const startColor = "b"
+    const endColor = "b";
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["c"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), routine input test 26", function () {
+    // evaluate what we actually get
+    const startColor = "b"
+    const endColor = "g";
+    const adjList = {
+        b: ["g", "y"],
+        g: ["y"],
+        o: ["r"],
+        r: ["g", "o", "p"],
+        y: ["b", "r"],
+        p: ["r"]
+    }
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(true);
+});
+
+test("isUnlockable(), boundary input test 1", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "a";
+    const adjList = {}
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
+
+test("isUnlockable(), boundary input test 2", function () {
+    // evaluate what we actually get
+    const startColor = "a"
+    const endColor = "b";
+    const adjList = {}
+    const diGraphRep = new diGraph(adjList);
+    const actual = isUnlockable(startColor, endColor, diGraphRep);
+
+    expect(actual).toBe(false);
+});
 

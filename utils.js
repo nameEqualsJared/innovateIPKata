@@ -39,22 +39,22 @@ function arrayCount(elem, arr) {
 }
 
 function isUnlockable(startColor, endColor, diGraphRep) {
-
-    console.log(startColor);
-    console.log(endColor);
-    console.log(diGraphRep);
-
+    /*
+    Input:
+        startColor, a string specifying the start color (same as the start vertex from the graph perspective)
+        endColor, a string specifying the end color (same as the end vertex from the graph perspective)
+        diGraphRep: a diGraph object representing the problem
+    Returns:
+        true if the panel is unlockable, false if it is not.
+    */
     const vertices = Object.keys(diGraphRep.adjList);
 
     // if diGraph is empty (which will happen if no chips were specified, and corresponds to the vertices array being empty) can immediatedly return false
     if (vertices.length === 0) return false;
-    console.log("HERE");
-
 
     // check that start and end color are in the vertices of the diGraphRep to start; certainly won't have a solution if they are not!
     if (!(vertices.includes(startColor))) return false;
     if (!(vertices.includes(endColor))) return false;
-
 
     // next determine if we need a eulerian cycle (eulerian cycles are more restrictive, in some sense)
     const needEulCycle = (startColor === endColor); // === checking is valid because strings are primitive type
@@ -62,7 +62,7 @@ function isUnlockable(startColor, endColor, diGraphRep) {
     if (needEulCycle) {
         // check the two eulerian cycle criteria (all must be true)
         // Criteria 1: all vertices with nonzero degree belong to the same strongly connected component (note: all vertices will have nonzero degree. Since chip definitions come in pairs, each vertice will have at least one outgoing edge)
-        if (!(diGraphRep.isNumStrongConCompsOne)) return false;
+        if (!(diGraphRep.isNumStrongConCompsOne())) return false;
 
         // Criteria 2: every vertex has equal in and out degree
         const degreeDescs = diGraphRep.describeVertices();
@@ -76,11 +76,9 @@ function isUnlockable(startColor, endColor, diGraphRep) {
     } else {
         // check the four eulerian path criteria (all must be true)
         // Critera 1: all vertices with nonzero degree belong to a single connected component of the underlying undirected graph
-        if (!(diGraphRep.isNumConCompsUndirOne)) return false;
-
+        if (!(diGraphRep.isNumConCompsUndirOne())) return false;
 
         const degreeDescs = diGraphRep.describeVertices();
-        console.log("here and", degreeDescs);
 
         // Criteria 2: the vertice corresponding to the start color must have indeg(v)-outdeg(v) == -1
         if (degreeDescs[startColor].in - degreeDescs[startColor].out != -1) return false;

@@ -1,6 +1,6 @@
 // Use object destructuring to import the relevant functions
-const { getInputColors, getColorFrequencies, isUnlockable } = require("./utils");
 const diGraph = require('./diGraph');
+const { getInputColors, getColorFrequencies, isUnlockable } = require("./utils");
 
 const inputTA = document.querySelector("#input");
 const outputTA = document.querySelector("#output");
@@ -22,18 +22,30 @@ function generateNewOutput() {
     // create the chipColors arrays, which notably excludes the start and end color definitions
     const chipColors = allInputColors.slice(2);
 
+    // create the directed graph representation of the problem
     const diGraphRep = diGraph.helperConstructor(chipColors);
 
-    outputTA.value = isUnlockable(startColor, endColor, diGraphRep);
+    // figure out if problem solvable (isUnlockable returns a boolean)
+    const panelUnlockable = isUnlockable(startColor, endColor, diGraphRep);
+
+    if (panelUnlockable) {
+
+
+    } else {
+        outputTA.value = "Cannot unlock master panel";
+    }
 }
 
 // Start the application
 initApp();
 
-// const dg = new diGraph({
-//     a: ["b", "c"],
-//     c: ["b"],
-//     b: []
-// })
-
-// dg.numConnectedComponents();
+// const startColor = "a"
+// const endColor = "a";
+// const adjList = {
+//     a: ["b"],
+//     b: ["a"],
+//     c: ["d"],
+//     d: ["c"]
+// }
+// const diGraphRep = new diGraph(adjList);
+// isUnlockable(startColor, endColor, diGraphRep);
