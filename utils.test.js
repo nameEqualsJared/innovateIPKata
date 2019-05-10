@@ -1,7 +1,7 @@
 // Unit testing utils.js
 
 // import the functions we want to test
-const { getInputColors, arrayCount } = require("./utils");
+const { getInputColors, arrayCount, nestedArraysEqualUnordered } = require("./utils");
 
 // -- Unit tests for: getInputColors --------------------------------------------------------------------------------------------------
 test("getInputColors, routine input test 1", function () {
@@ -80,4 +80,6 @@ test("arrayCount(), boundary input test 4", function () {
     const actual = arrayCount(null, ["2343", 23, 324, "hello"]);
     expect(actual).toBe(0);
 });
+
+// --Unit tests for: isUnlockable() -------------------------------------------------------------------------------------------
 

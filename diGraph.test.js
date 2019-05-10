@@ -3,6 +3,7 @@
 // import the class we wish to test
 const diGraph = require('./diGraph');
 
+
 // -- Unit tests for: diGraph.helperConstructor() ----------------------------------------------------------------------------------
 test("diGraph.helperConstructor(), routine input 1", function () {
     // evaluate what we actually get
@@ -293,5 +294,461 @@ test(".describeVertices(), boundary input 5", function () {
     expect(actualDesc).toStrictEqual(expectedDesc);
 });
 
-// --Unit tests for: isUnlockable()
 
+// -- Unit tests for: .isNumConCompsUndirOne() --------------------------------------------------------------------
+test(".isNumConCompsUndirOne(), routine input 1", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: [],
+        c: ["b"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 2", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 3", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: [],
+        c: ["d"],
+        d: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumConCompsUndirOne(), routine input 3", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: [],
+        c: ["d"],
+        d: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumConCompsUndirOne(), routine input 4", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["c"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumConCompsUndirOne(), routine input 5", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["a", "d"],
+        c: ["d"],
+        d: ["c", "b"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 6", function () {
+    // evaluate what we actually get
+    const adjList = {
+        b: ["y"],
+        y: ["r"],
+        r: ["o", "g"],
+        o: ["p"],
+        p: [],
+        g: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 7", function () {
+    // evaluate what we actually get
+    const adjList = {
+        b: ["y"],
+        y: ["r"],
+        r: ["o", "g"],
+        o: ["r"],
+        g: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 8", function () {
+    // evaluate what we actually get
+    const adjList = {
+        b: ["g", "y"],
+        g: ["y"],
+        y: ["b", "r"],
+        r: ["o", "g"],
+        o: ["r"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 9", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b", "e"],
+        b: ["c", "a"],
+        c: ["d"],
+        d: ["e"],
+        e: ["d", "a"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), routine input 10", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["a"],
+        e: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumConCompsUndirOne(), boundary input 1", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: [],
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumConCompsUndirOne(), boundary input 0", function () {
+    // evaluate what we actually get
+    const adjList = {}
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumConCompsUndirOne();
+
+    expect(actualNum).toBe(false);
+});
+
+
+// -- Unit tests for: isNumStrongConComps() ----------------------------------------------------------------------------------------------
+test(".isNumStrongConCompsOne(), routine input 1", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: [],
+        c: ["b"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 2", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 3", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: [],
+        c: ["d"],
+        d: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 4", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["c"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 5", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["a", "d"],
+        c: ["d"],
+        d: ["c", "b"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumStrongConCompsOne(), routine input 6", function () {
+    // evaluate what we actually get
+    const adjList = {
+        b: ["y"],
+        y: ["r"],
+        r: ["o", "g"],
+        o: ["p"],
+        p: [],
+        g: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 7", function () {
+    // evaluate what we actually get
+    const adjList = {
+        b: ["y"],
+        y: ["r"],
+        r: ["o", "g"],
+        o: ["r"],
+        g: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 8", function () {
+    // evaluate what we actually get
+    const adjList = {
+        b: ["g", "y"],
+        g: ["y"],
+        y: ["b", "r"],
+        r: ["o", "g"],
+        o: ["r"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumStrongConCompsOne(), routine input 9", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b", "e"],
+        b: ["c", "a"],
+        c: ["d"],
+        d: ["e"],
+        e: ["d", "a"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumStrongConCompsOne(), routine input 10", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["a"],
+        c: ["d"],
+        d: ["a"],
+        e: []
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+test(".isNumStrongConCompsOne(), routine input 11", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: ["b"],
+        b: ["c"],
+        c: ["a"]
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumStrongConCompsOne(), boundary input 1", function () {
+    // evaluate what we actually get
+    const adjList = {
+        a: [],
+    }
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(true);
+});
+
+test(".isNumStrongConCompsOne(), boundary input 2", function () {
+    // evaluate what we actually get
+    const adjList = {}
+    const dGraph = new diGraph(adjList);
+    const actualNum = dGraph.isNumStrongConCompsOne();
+
+    expect(actualNum).toBe(false);
+});
+
+// -- Unit tests for: .reverse() --------------------------------------------------------------------------------------------------
+test(".reverse(), routine input 1", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        c: ["a", "d"],
+        b: ["c"],
+        d: ["a"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.reverse();
+
+    // set up what we expect
+    const adjListExpect = {
+        a: ["c", "d"],
+        c: ["b"],
+        b: ["a"],
+        d: ["c"]
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".reverse(), routine input 2", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b", "a"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.reverse();
+
+    // set up what we expect
+    const adjListExpect = {
+        a: ["c"],
+        b: ["a", "c"],
+        c: ["b"]
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".reverse(), routine input 3", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["c"],
+        b: [],
+        c: [],
+        d: ["a", "b", "c"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.reverse();
+
+    // set up what we expect
+    const adjListExpect = {
+        a: ["d"],
+        b: ["d"],
+        c: ["a", "d"],
+        d: []
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".reverse(), boundary input 1", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["c"],
+        c: []
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.reverse();
+
+    // set up what we expect
+    const adjListExpect = {
+        c: ["a"],
+        a: []
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".reverse(), boundary input 2", function () {
+    // evaluate what we actually get
+    const adjListActual = {}
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.reverse();
+
+    // set up what we expect
+    const adjListExpect = {}
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
