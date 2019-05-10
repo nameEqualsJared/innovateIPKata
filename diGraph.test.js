@@ -752,3 +752,128 @@ test(".reverse(), boundary input 2", function () {
 
     expect(actualGraph).toStrictEqual(expectedGraph);
 });
+
+
+
+// -- Unit tests for: .deleteEdge() --------------------------------------------------------------------------------------------
+
+test(".deleteEdge(), routine input 1", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.deleteEdge("b", "c");
+
+    // set up what we expect
+    const adjListExpect = {
+        a: ["b"],
+        b: [],
+        c: ["b"]
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".deleteEdge(), routine input 2", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.deleteEdge("a", "b");
+
+    // set up what we expect
+    const adjListExpect = {
+        b: ["c"],
+        c: ["b"]
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".deleteEdge(), routine input 3", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: ["c"],
+        c: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.deleteEdge("c", "b");
+
+    // set up what we expect
+    const adjListExpect = {
+        a: ["b"],
+        b: ["c"],
+        c: []
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".deleteEdge(), routine input 4", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        b: ["g", "y"],
+        g: ["y"],
+        y: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.deleteEdge("g", "y");
+
+    // set up what we expect
+    const adjListExpect = {
+        b: ["g", "y"],
+        g: [],
+        y: ["b"]
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+
+test(".deleteEdge(), routine input 5 -- should delete isolated vertices and work with consecutive calls", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        b: ["g", "y"],
+        g: ["y"],
+        y: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.deleteEdge("b", "g");
+    actualGraph.deleteEdge("g", "y");
+
+    // set up what we expect
+    const adjListExpect = {
+        b: ["y"],
+        y: ["b"]
+    }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});
+
+test(".deleteEdge(), boundary input 1", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: []
+    }
+    const actualGraph = new diGraph(adjListActual);
+    actualGraph.deleteEdge("a", "b");
+
+    // set up what we expect
+    const adjListExpect = { b: [] }
+    const expectedGraph = new diGraph(adjListExpect);
+
+    expect(actualGraph).toStrictEqual(expectedGraph);
+});

@@ -235,7 +235,6 @@ class diGraph {
 
     }
 
-
     reverse() {
         /*
         Reverses all the edges in the directed graph. Mutates the underlying graph.
@@ -275,6 +274,42 @@ class diGraph {
             }
         }
         this.adjList = newAdjList;
+    }
+
+    deleteEdge(startVert, endVert) {
+        /*
+        Input:
+            startVert, the starting vertex of the directed edge (a string)
+            endVert, the ending vertex of the directed edge (a string)
+
+        Deletes the directed edge going from startVert to endVert. Mutates the object / the directed graph.
+        NOTE: if the startVertex is left isolated, this method also deletes that vertex.
+        NOTE: there must be an edge from startVert to endVert for method to work properly
+
+        Gets used in getUnlockOrder()
+
+        Example:
+            Say startVert = "a", endVert = "b", and underlying diGraph this method was called on is = diGraph{ adjList: {
+                a: ["b"],
+                b: ["c"],
+                c: []
+            }}
+            Then the result is that edge ab will be deleted, and since vertex a is now isolated, vertex a will also be deleted. So the result will be that "this" will = diGraph{adjList:{
+                b: ["c"],
+                c: []
+            }}
+        */
+        const outgoingVerts = this.adjList[startVert];
+        const locToDelete = outgoingVerts.indexOf(endVert);
+        outgoingVerts.splice(locToDelete, 1); // deletes the edge
+        // Now need to check if startVert is left isolated (need to delete it if so). A vertex is isolated if it's in degree and out degree is 0
+        const outDeg = outgoingVerts.length;
+        // Using .describeVertices() is a little wasteful here, as that method returns an object describing the degrees of every vertex, and we only need the in degree of startVert here. But it's the simplest solution, so I'll take that miniscule performance hit (of course if performance became an issue I'd optimize this)
+        const inDeg = this.describeVertices()[startVert].in;
+        if (outDeg == 0 && inDeg == 0) {
+            delete this.adjList[startVert]; // completely delete the vertex/property/key out of the adjList
+        }
+
     }
 
 }

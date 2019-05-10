@@ -97,6 +97,39 @@ function isUnlockable(startColor, endColor, diGraphRep) {
         return true;
 
     }
+
+    function getUnlockOrder(startColor, endColor, diGraphRep) {
+        /*
+        Input:
+            startColor: a string speciying the start color/vertice
+            endColor: a string specifying the end color/vertice
+            diGraphRep: the directed graph representation of the problem
+        Output:
+            An array, giving an order of colors (vertices) that will unlock the panel. 
+            I.e., returns a eulerian path through the directed graph (which is a eulerian cycle if startColor == endColor)
+
+        In other words, this algorithm solves the eulerian path problem. It is based on Fleury's algorithm.
+
+        NOTE: this function assumes that the problem is solvable! It may give incorrect output if problem is actually not solvable. The function is only intended to return an order that solves the problem once we already know the problem is solvable.
+
+        Example:
+            Say startColor = "a", endColor = "b", and diGraphRep = diGraph{ adjList{
+                a: ["b"],
+                b: ["c"], 
+                c: ["b"]
+            }}
+            Then function returns ["a", "b", "c", "b"] because this eulerian path solves the problem
+        */
+        let res = [];
+        res.push(startColor);
+
+
+
+
+
+    }
+
+
 }
 
 
