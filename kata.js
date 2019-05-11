@@ -1,6 +1,6 @@
 // Use object destructuring to import the relevant functions
 const diGraph = require('./diGraph');
-const { getInputColors, getColorFrequencies, isUnlockable } = require("./utils");
+const { getInputColors, isUnlockable, getUnlockOrder } = require("./utils");
 
 const inputTA = document.querySelector("#input");
 const outputTA = document.querySelector("#output");
@@ -29,7 +29,13 @@ function generateNewOutput() {
     const panelUnlockable = isUnlockable(startColor, endColor, diGraphRep);
 
     if (panelUnlockable) {
-
+        const outputOrder = getUnlockOrder(startColor, endColor, diGraphRep);
+        // outputOrder is an array of the vertices in the eulerian path that solves the problem. Code below just print's out the output as the problem describes 
+        let res = "";
+        for (let i = 0; i < outputOrder.length - 1; i++) {
+            res += outputOrder[i] + ", " + outputOrder[i + 1] + "\n";
+        }
+        outputTA.value = res;
 
     } else {
         outputTA.value = "Cannot unlock master panel";
@@ -39,13 +45,3 @@ function generateNewOutput() {
 // Start the application
 initApp();
 
-// const startColor = "a"
-// const endColor = "a";
-// const adjList = {
-//     a: ["b"],
-//     b: ["a"],
-//     c: ["d"],
-//     d: ["c"]
-// }
-// const diGraphRep = new diGraph(adjList);
-// isUnlockable(startColor, endColor, diGraphRep);

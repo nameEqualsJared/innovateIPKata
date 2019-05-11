@@ -214,7 +214,6 @@ class diGraph {
         // if graph is empty, just return false (there is no strongly connected components I'd say)
         if (vertices.length === 0) return false
 
-
         let discovered = [];
         // recall that every top level call to visit discovers a new connected component. So to check if the dfs hits every component, we can just check that the length of discovered is = the number of vertices in the directed graph
         visit(this.adjList, distinguishedV, discovered);
@@ -236,7 +235,6 @@ class diGraph {
         return true;
 
     }
-
 
     reverse() {
         /*
@@ -279,13 +277,67 @@ class diGraph {
         this.adjList = newAdjList;
     }
 
+    deleteEdge(startVert, endVert) {
+        /*
+        Input:
+            startVert, the starting vertex of the directed edge (a string)
+            endVert, the ending vertex of the directed edge (a string)
+
+        Deletes the directed edge going from startVert to endVert. Mutates the object / the directed graph.
+        NOTE: if the startVertex is left isolated, this method also deletes that vertex.
+        NOTE: there must be an edge from startVert to endVert for method to work properly
+
+        Gets used in getUnlockOrder()
+
+        Example:
+            Say startVert = "a", endVert = "b", and underlying diGraph this method was called on is = diGraph{ adjList: {
+                a: ["b"],
+                b: ["c"],
+                c: []
+            }}
+            Then the result is that edge ab will be deleted, and since vertex a is now isolated, vertex a will also be deleted. So the result will be that "this" will = diGraph{adjList:{
+                b: ["c"],
+                c: []
+            }}
+        */
+        const outgoingVerts = this.adjList[startVert];
+        const locToDelete = outgoingVerts.indexOf(endVert);
+        outgoingVerts.splice(locToDelete, 1); // deletes the edge
+        // Now need to check if startVert is left isolated (need to delete it if so). A vertex is isolated if it's in degree and out degree is 0
+        const outDeg = outgoingVerts.length;
+        // Using .describeVertices() is a little wasteful here, as that method returns an object describing the degrees of every vertex, and we only need the in degree of startVert here. But it's the simplest solution, so I'll take that miniscule performance hit (of course if performance became an issue I'd optimize this)
+        const inDeg = this.describeVertices()[startVert].in;
+        if (outDeg == 0 && inDeg == 0) {
+            delete this.adjList[startVert]; // completely delete the vertex/property/key out of the adjList
+        }
+    }
+
+    getNumEdges() {
+        /*
+        Returns the number of edges. We recall that in our model the # of edges in the graph = the # of input chips.
+        Example:
+            Say this = diGraph{ adjList: {
+                a: ["b"],
+                b: ["c", "a"],
+                c: ["b"]
+            }}
+            Then function returns 4 because there are 4 edges in this graph.
+        */
+        let res = 0;
+        const vertices = Object.keys(this.adjList);
+        for (let vertice of vertices) {
+            res += this.adjList[vertice].length;
+        }
+        return res;
+    }
+
 }
 
 module.exports = diGraph;
 },{"./utils":3}],2:[function(require,module,exports){
 // Use object destructuring to import the relevant functions
 const diGraph = require('./diGraph');
-const { getInputColors, getColorFrequencies, isUnlockable } = require("./utils");
+const { getInputColors, isUnlockable, getUnlockOrder } = require("./utils");
 
 const inputTA = document.querySelector("#input");
 const outputTA = document.querySelector("#output");
@@ -307,21 +359,29 @@ function generateNewOutput() {
     // create the chipColors arrays, which notably excludes the start and end color definitions
     const chipColors = allInputColors.slice(2);
 
+    // create the directed graph representation of the problem
     const diGraphRep = diGraph.helperConstructor(chipColors);
 
-    outputTA.value = isUnlockable(startColor, endColor, diGraphRep);
+    // figure out if problem solvable (isUnlockable returns a boolean)
+    const panelUnlockable = isUnlockable(startColor, endColor, diGraphRep);
+
+    if (panelUnlockable) {
+        const outputOrder = getUnlockOrder(startColor, endColor, diGraphRep);
+        // outputOrder is an array of the vertices in the eulerian path that solves the problem. Code below just print's out the output as the problem describes 
+        let res = "";
+        for (let i = 0; i < outputOrder.length - 1; i++) {
+            res += outputOrder[i] + ", " + outputOrder[i + 1] + "\n";
+        }
+        outputTA.value = res;
+
+    } else {
+        outputTA.value = "Cannot unlock master panel";
+    }
 }
 
 // Start the application
 initApp();
 
-// const dg = new diGraph({
-//     a: ["b", "c"],
-//     c: ["b"],
-//     b: []
-// })
-
-// dg.numConnectedComponents();
 },{"./diGraph":1,"./utils":3}],3:[function(require,module,exports){
 const diGraph = require("./diGraph");
 
@@ -364,11 +424,14 @@ function arrayCount(elem, arr) {
 }
 
 function isUnlockable(startColor, endColor, diGraphRep) {
-
-    console.log(startColor);
-    console.log(endColor);
-    console.log(diGraphRep);
-
+    /*
+    Input:
+        startColor, a string specifying the start color (same as the start vertex from the graph perspective)
+        endColor, a string specifying the end color (same as the end vertex from the graph perspective)
+        diGraphRep: a diGraph object representing the problem
+    Returns:
+        true if the panel is unlockable, false if it is not.
+    */
     const vertices = Object.keys(diGraphRep.adjList);
 
     // if diGraph is empty (which will happen if no chips were specified, and corresponds to the vertices array being empty) can immediatedly return false
@@ -378,14 +441,13 @@ function isUnlockable(startColor, endColor, diGraphRep) {
     if (!(vertices.includes(startColor))) return false;
     if (!(vertices.includes(endColor))) return false;
 
-
     // next determine if we need a eulerian cycle (eulerian cycles are more restrictive, in some sense)
     const needEulCycle = (startColor === endColor); // === checking is valid because strings are primitive type
 
     if (needEulCycle) {
         // check the two eulerian cycle criteria (all must be true)
         // Criteria 1: all vertices with nonzero degree belong to the same strongly connected component (note: all vertices will have nonzero degree. Since chip definitions come in pairs, each vertice will have at least one outgoing edge)
-        if (!(diGraphRep.isNumStrongConCompsOne)) return false;
+        if (!(diGraphRep.isNumStrongConCompsOne())) return false;
 
         // Criteria 2: every vertex has equal in and out degree
         const degreeDescs = diGraphRep.describeVertices();
@@ -399,7 +461,7 @@ function isUnlockable(startColor, endColor, diGraphRep) {
     } else {
         // check the four eulerian path criteria (all must be true)
         // Critera 1: all vertices with nonzero degree belong to a single connected component of the underlying undirected graph
-        if (!(diGraphRep.isNumConCompsUndirOne)) return false;
+        if (!(diGraphRep.isNumConCompsUndirOne())) return false;
 
         const degreeDescs = diGraphRep.describeVertices();
 
@@ -422,8 +484,69 @@ function isUnlockable(startColor, endColor, diGraphRep) {
     }
 }
 
+function getUnlockOrder(startColor, endColor, diGraphRep) {
+    /*
+    Input:
+        startColor: a string speciying the start color/vertice
+        endColor: a string specifying the end color/vertice
+        diGraphRep: the directed graph representation of the problem
+    Output:
+        An array, giving an order of colors (vertices) that will unlock the panel. 
+        I.e., returns a eulerian path through the directed graph (which is a eulerian cycle if startColor == endColor)
+
+    In other words, this algorithm solves the eulerian path problem. It is based on Fleury's algorithm.
+
+    NOTE: this function assumes that the problem is solvable! It may give incorrect output if problem is actually not solvable. The function is only intended to return an order that solves the problem once we already know the problem is solvable.
+
+    Example:
+        Say startColor = "a", endColor = "b", and diGraphRep = diGraph{ adjList{
+            a: ["b"],
+            b: ["c"], 
+            c: ["b"]
+        }}
+        Then function returns ["a", "b", "c", "b"] because this eulerian path solves the problem
+    */
+    let res = [];
+    res.push(startColor);
+
+    const numEdges = diGraphRep.getNumEdges(); // recall the number of edges = the number of input chips. Out eulerian path needs to hit every edge to be a valid solution
+
+    let onVertex = startColor; // this is the vertex we are "on" as the algorithm runs
+    for (let i = 0; i < numEdges; i++) {
+        console.log("---\n");
+        console.log(onVertex);
+        console.log(JSON.stringify(diGraphRep.adjList));
+        // algorithm will run exactly numEdges times.
+
+        // Idea is to determine an edge whose deletion would not disconnected the graph. I.e., determine an edge coming out of onVertex such that deleting the edge would not disconnected the graph (in the undirected sense).
+
+        const adjListCopy = JSON.parse(JSON.stringify(diGraphRep.adjList)); // make a copy of adjList; used to restore the graph if we happen to delete an edge that does disconnect the graph (in that case we need to restore the graph and keep looking). Recall, we are looking for an edge whose deletion will not disconnect the graph
+
+        const outgoingVerts = diGraphRep.adjList[onVertex];
+        const outgoingVertsCopy = outgoingVerts.slice(0); // create a copy of the outgoingVerts array, as it will get modified in the .deleteEdge() call and you shouldn't mutate something you are looping over
+        for (let outgoingVert of outgoingVertsCopy) {
+
+            diGraphRep.deleteEdge(onVertex, outgoingVert); // will mutate the underlying diGraph, I.e. will mutate diGraph.adjList (by deleting the edge of course)
+
+            if (diGraphRep.isNumConCompsUndirOne()) {
+                // in this case we did delete an edge whose deletion did not disconnect the graph. Great! So just update the result and the onVertex and ready to continue
+                res.push(outgoingVert);
+                onVertex = outgoingVert;
+                break;
+
+            } else {
+                // woops, should not be deleting this edge. So restore graph and keep looking
+                diGraphRep.adjList = adjListCopy;
+
+            }
+        }
+
+    }
+    return res;
+
+}
 
 // export the relevant functions
-module.exports = { getInputColors, arrayCount, isUnlockable };
+module.exports = { getInputColors, arrayCount, isUnlockable, getUnlockOrder };
 
 },{"./diGraph":1}]},{},[2]);

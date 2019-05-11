@@ -877,3 +877,81 @@ test(".deleteEdge(), boundary input 1", function () {
 
     expect(actualGraph).toStrictEqual(expectedGraph);
 });
+
+// -- Unit tests for: .getNumEdges() ----------------------------------------------------------------------------------------------------
+test(".getNumEdges(), routine input 1", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: ["a", "c"],
+        c: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    const actualNumEdges = actualGraph.getNumEdges();
+
+    expect(actualNumEdges).toBe(4);
+});
+
+test(".getNumEdges(), routine input 2", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b", "c"],
+        b: ["a", "c"],
+        c: ["b"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    const actualNumEdges = actualGraph.getNumEdges();
+
+    expect(actualNumEdges).toBe(5);
+});
+
+
+test(".getNumEdges(), routine input 3", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b", "c"],
+        b: ["a", "c"],
+        c: ["b", "a"]
+    }
+    const actualGraph = new diGraph(adjListActual);
+    const actualNumEdges = actualGraph.getNumEdges();
+
+    expect(actualNumEdges).toBe(6);
+});
+
+test(".getNumEdges(), routine input 4", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: [],
+        b: ["a", "c"],
+        c: []
+    }
+    const actualGraph = new diGraph(adjListActual);
+    const actualNumEdges = actualGraph.getNumEdges();
+
+    expect(actualNumEdges).toBe(2);
+});
+
+test(".getNumEdges(), routine input 5", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: ["b"],
+        b: []
+    }
+    const actualGraph = new diGraph(adjListActual);
+    const actualNumEdges = actualGraph.getNumEdges();
+
+    expect(actualNumEdges).toBe(1);
+});
+
+test(".getNumEdges(), boundary input 1", function () {
+    // evaluate what we actually get
+    const adjListActual = {
+        a: [],
+        b: []
+    }
+    const actualGraph = new diGraph(adjListActual);
+    const actualNumEdges = actualGraph.getNumEdges();
+
+    expect(actualNumEdges).toBe(0);
+});

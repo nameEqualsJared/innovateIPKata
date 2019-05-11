@@ -309,7 +309,25 @@ class diGraph {
         if (outDeg == 0 && inDeg == 0) {
             delete this.adjList[startVert]; // completely delete the vertex/property/key out of the adjList
         }
+    }
 
+    getNumEdges() {
+        /*
+        Returns the number of edges. We recall that in our model the # of edges in the graph = the # of input chips.
+        Example:
+            Say this = diGraph{ adjList: {
+                a: ["b"],
+                b: ["c", "a"],
+                c: ["b"]
+            }}
+            Then function returns 4 because there are 4 edges in this graph.
+        */
+        let res = 0;
+        const vertices = Object.keys(this.adjList);
+        for (let vertice of vertices) {
+            res += this.adjList[vertice].length;
+        }
+        return res;
     }
 
 }
