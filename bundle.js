@@ -382,6 +382,7 @@ function generateNewOutput() {
 // Start the application
 initApp();
 
+
 },{"./diGraph":1,"./utils":3}],3:[function(require,module,exports){
 const diGraph = require("./diGraph");
 
@@ -513,9 +514,6 @@ function getUnlockOrder(startColor, endColor, diGraphRep) {
 
     let onVertex = startColor; // this is the vertex we are "on" as the algorithm runs
     for (let i = 0; i < numEdges; i++) {
-        console.log("---\n");
-        console.log(onVertex);
-        console.log(JSON.stringify(diGraphRep.adjList));
         // algorithm will run exactly numEdges times.
 
         // Idea is to determine an edge whose deletion would not disconnected the graph. I.e., determine an edge coming out of onVertex such that deleting the edge would not disconnected the graph (in the undirected sense).
