@@ -31,7 +31,6 @@ function generateNewOutput() {
     if (panelUnlockable) {
         const outputOrder = getUnlockOrder(startColor, endColor, diGraphRep);
         // outputOrder is an array of the vertices in the eulerian path that solves the problem. Code below just print's out the output as the problem describes 
-        console.log(outputOrder);
         let res = "";
         for (let i = 0; i < outputOrder.length - 1; i++) {
             res += outputOrder[i] + ", " + outputOrder[i + 1] + "\n";
