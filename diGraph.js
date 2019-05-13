@@ -307,15 +307,13 @@ class diGraph {
         // First we get the out degree of the startVert
         const outDeg = outgoingVerts.length;
 
-
         // Now get the indegree of the startVert
         const vertices = Object.keys(this.adjList);
-        const allArrsInAdjList = [];
-        for (let vertex of vertices) {
-            allArrsInAdjList.concat(this.adjList[vertice]);
+        let allArrsInAdjList = [];
+        for (let vertice of vertices) {
+            allArrsInAdjList = allArrsInAdjList.concat(this.adjList[vertice]);
         }
         const inDeg = arrayCount(startVert, allArrsInAdjList);
-
 
         if (outDeg == 0 && inDeg == 0) {
             delete this.adjList[startVert]; // completely delete the vertex/property/key out of the adjList
