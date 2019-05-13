@@ -24,6 +24,7 @@ function generateNewOutput() {
 
     // create the directed graph representation of the problem
     const diGraphRep = diGraph.helperConstructor(chipColors);
+    console.log(diGraphRep);
 
     // figure out if problem solvable (isUnlockable returns a boolean)
     const panelUnlockable = isUnlockable(startColor, endColor, diGraphRep);
