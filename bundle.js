@@ -304,9 +304,18 @@ class diGraph {
         const locToDelete = outgoingVerts.indexOf(endVert);
         outgoingVerts.splice(locToDelete, 1); // deletes the edge
         // Now need to check if startVert is left isolated (need to delete it if so). A vertex is isolated if it's in degree and out degree is 0
+
+        // First we get the out degree of the startVert
         const outDeg = outgoingVerts.length;
-        // Using .describeVertices() is a little wasteful here, as that method returns an object describing the degrees of every vertex, and we only need the in degree of startVert here. But it's the simplest solution, so I'll take that miniscule performance hit (of course if performance became an issue I'd optimize this)
-        const inDeg = this.describeVertices()[startVert].in;
+
+        // Now get the indegree of the startVert
+        const vertices = Object.keys(this.adjList);
+        let allArrsInAdjList = [];
+        for (let vertice of vertices) {
+            allArrsInAdjList = allArrsInAdjList.concat(this.adjList[vertice]);
+        }
+        const inDeg = arrayCount(startVert, allArrsInAdjList);
+
         if (outDeg == 0 && inDeg == 0) {
             delete this.adjList[startVert]; // completely delete the vertex/property/key out of the adjList
         }
@@ -361,7 +370,7 @@ function generateNewOutput() {
 
     // create the directed graph representation of the problem
     const diGraphRep = diGraph.helperConstructor(chipColors);
-    console.log(diGraphRep);
+    console.log(JSON.stringify(diGraphRep));
 
     // figure out if problem solvable (isUnlockable returns a boolean)
     const panelUnlockable = isUnlockable(startColor, endColor, diGraphRep);
@@ -369,6 +378,7 @@ function generateNewOutput() {
     if (panelUnlockable) {
         const outputOrder = getUnlockOrder(startColor, endColor, diGraphRep);
         // outputOrder is an array of the vertices in the eulerian path that solves the problem. Code below just print's out the output as the problem describes 
+        console.log(outputOrder);
         let res = "";
         for (let i = 0; i < outputOrder.length - 1; i++) {
             res += outputOrder[i] + ", " + outputOrder[i + 1] + "\n";
